@@ -9,12 +9,16 @@ import fetch from 'node-fetch';
 export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
-    const channel = request.headers.host;
+    const requestUri = request.headers.referer;
+    const splitedOrigin = requestUri.split('?')[0].split('/');
+
+    const marketName = splitedOrigin[2];
+    const productName = splitedOrigin[splitedOrigin.length - 1];
+
+    splitedOrigin[splitedOrigin.length - 1];
     const os = request.headers['sec-ch-ua-platform'];
     let language = request.headers['accept-language'];
     if (language) language = language.split(';')[0];
-
-    console.log(request);
 
     const measurement_id = `G-E7R74Z84F1`;
     const api_secret = `RblWGVY3QzyBVbyvOjj3Kg`;
@@ -30,7 +34,8 @@ export class FileController {
             {
               name: '상품조회',
               params: {
-                channel,
+                marketName,
+                productName,
                 os,
                 language,
               },
