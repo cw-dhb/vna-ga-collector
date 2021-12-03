@@ -5,7 +5,7 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
 
-@Controller('exclamation')
+@Controller('exclamation.png')
 export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
