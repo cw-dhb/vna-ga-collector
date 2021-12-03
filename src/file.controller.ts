@@ -15,7 +15,6 @@ export class FileController {
     const marketName = splitedOrigin[2];
     const productName = splitedOrigin[splitedOrigin.length - 1];
 
-    splitedOrigin[splitedOrigin.length - 1];
     const os = request.headers['sec-ch-ua-platform'];
     let language = request.headers['accept-language'];
     if (language) language = language.split(';')[0];
