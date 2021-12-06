@@ -8,7 +8,7 @@ import {
   urlToMarketName,
   getUserInfoFromFingerprint,
   FingerprintResultComponent,
-} from './requestDataParser';
+} from './request-data-parser';
 
 // GA API 사용을 위한 데이터
 const measurement_id = `G-E7R74Z84F1`;

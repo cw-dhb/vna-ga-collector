@@ -49,11 +49,11 @@ export const getUserInfoFromFingerprint = (
 
   const result = fingerprintResultComponents[0];
   return {
-    country: result.geoip.country,
-    language: result.acceptHeaders.language,
+    country: result.geoip?.country,
+    language: result.acceptHeaders?.language,
     device:
-      result.useragent.browser.family +
-      result.useragent.device.family +
-      result.useragent.os.family,
+      result.useragent?.browser?.family +
+      result.useragent.device?.family +
+      result.useragent.os?.family,
   };
 };
