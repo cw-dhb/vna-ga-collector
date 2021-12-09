@@ -5,7 +5,7 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
 import {
-  extractMarketInfoFromUri,
+  extractMarketNameFromUri,
   getUserInfoFromFingerprint,
   FingerprintResultComponent,
 } from './request-data-parser';
@@ -19,19 +19,12 @@ export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
     console.log('request: ', request);
-    const [marketName, productId] = extractMarketInfoFromUri(
-      request.headers.referer,
-    );
+    const marketName = extractMarketNameFromUri(request.headers.referer);
     const userInfo = getUserInfoFromFingerprint(
       request.fingerprint.components as unknown as FingerprintResultComponent,
     );
 
-    console.info(
-      'marketName, productId, userInfo: ',
-      marketName,
-      productId,
-      userInfo,
-    );
+    console.info('marketName, productId, userInfo: ', marketName, userInfo);
 
     fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`,
@@ -44,7 +37,6 @@ export class FileController {
               name: '상품조회',
               params: {
                 marketName,
-                productId,
                 ...userInfo,
               },
             },

@@ -26,17 +26,6 @@ export type FingerprintResultComponent = {
   };
 };
 
-const naverProductIdExtractor = (naverUrl: string) => {
-  if (!naverUrl || !naverUrl.startsWith('https://smartsotre.naver.com'))
-    return '';
-
-  return naverUrl.split('//')[1].split('/')[
-    naverUrl.split('//')[1].split('/').indexOf('products') + 1
-  ];
-};
-
-const productIdExtractorMap = new Map([['네이버', naverProductIdExtractor]]);
-
 const marketUrlMap = new Map([
   ['naver.com', '네이버'],
   ['gmarket.co.kr', '지마켓'],
@@ -46,13 +35,12 @@ const marketUrlMap = new Map([
   ['11st.co.kr', '11번가'],
 ]);
 
-export const extractMarketInfoFromUri = (url: string) => {
+export const extractMarketNameFromUri = (url: string) => {
   if (!url) return '';
 
   for (const [marketUrl, marketName] of marketUrlMap.entries()) {
     if (url.includes(marketUrl)) {
-      const productId = productIdExtractorMap.get(marketName)(url);
-      return [marketName, productId];
+      return marketName;
     }
   }
   return '';
