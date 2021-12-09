@@ -10,7 +10,8 @@ import {
   FingerprintResultComponent,
 } from './request-data-parser';
 
-// GA API 사용을 위한 데이터
+// ### GA API 사용을 위한 데이터 ###
+// GA 콘솔 -> 데이터 스트림 경로에서 G-ID, secret을 생성해서 아래 두 값을 교체해주세요.
 const measurement_id = `G-E7R74Z84F1`;
 const api_secret = `RblWGVY3QzyBVbyvOjj3Kg`;
 
@@ -18,13 +19,10 @@ const api_secret = `RblWGVY3QzyBVbyvOjj3Kg`;
 export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
-    console.log('request: ', request);
     const marketName = extractMarketNameFromUri(request.headers.referer);
     const userInfo = getUserInfoFromFingerprint(
       request.fingerprint.components as unknown as FingerprintResultComponent,
     );
-
-    console.info('marketName, productId, userInfo: ', marketName, userInfo);
 
     fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`,
