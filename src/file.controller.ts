@@ -5,7 +5,7 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
 import {
-  urlToMarketName,
+  extractMarketInfoFromUri,
   getUserInfoFromFingerprint,
   FingerprintResultComponent,
 } from './request-data-parser';
@@ -18,8 +18,8 @@ const api_secret = `RblWGVY3QzyBVbyvOjj3Kg`;
 export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
-    const marketName = urlToMarketName(
-      request.headers.referer ?? 'https://store.naver.com',
+    const [marketName, productId] = extractMarketInfoFromUri(
+      request.headers.referer,
     );
     const userInfo = getUserInfoFromFingerprint(
       request.fingerprint.components as unknown as FingerprintResultComponent,
@@ -40,6 +40,7 @@ export class FileController {
               name: '상품조회',
               params: {
                 marketName,
+                productId,
                 ...userInfo,
               },
             },
