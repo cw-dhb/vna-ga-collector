@@ -18,7 +18,7 @@ const api_secret = `RblWGVY3QzyBVbyvOjj3Kg`;
 export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
-    console.log('referer', request.headers.referer);
+    console.log('request: ', request);
     const [marketName, productId] = extractMarketInfoFromUri(
       request.headers.referer,
     );
@@ -26,9 +26,12 @@ export class FileController {
       request.fingerprint.components as unknown as FingerprintResultComponent,
     );
 
-    console.info(request.fingerprint);
-
-    console.info(marketName, productId, userInfo);
+    console.info(
+      'marketName, productId, userInfo: ',
+      marketName,
+      productId,
+      userInfo,
+    );
 
     fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`,
