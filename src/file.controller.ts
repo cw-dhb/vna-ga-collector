@@ -18,10 +18,16 @@ const api_secret = `RblWGVY3QzyBVbyvOjj3Kg`;
 export class FileController {
   @Get()
   getFile(@Req() request: Request): StreamableFile {
-    const marketName = urlToMarketName(request.headers.referer);
-    const userInfo = getUserInfoFromFingerprint(
-      request.fingerprint.components as FingerprintResultComponent[],
+    const marketName = urlToMarketName(
+      request.headers.referer ?? 'https://store.naver.com',
     );
+    const userInfo = getUserInfoFromFingerprint(
+      request.fingerprint.components as unknown as FingerprintResultComponent,
+    );
+
+    console.info(request.fingerprint);
+
+    console.info(marketName, userInfo);
 
     fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`,

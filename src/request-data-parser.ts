@@ -36,24 +36,36 @@ const marketUrlMap = new Map([
 ]);
 
 export const urlToMarketName = (url: string) => {
+  if (!url) return '';
+
   for (const [key, value] of marketUrlMap.entries()) {
     if (url.includes(value)) return key;
   }
   return '';
 };
 
-export const getUserInfoFromFingerprint = (
-  fingerprintResultComponents: FingerprintResultComponent[],
-) => {
-  if (fingerprintResultComponents.length) return {};
+const languageHeaderToLangauge = (languageHeader: string) => {
+  if (typeof languageHeader !== 'string') return '';
+  return languageHeader.split(';')[0];
+};
 
-  const result = fingerprintResultComponents[0];
+const useragentHeaderToDevice = (
+  useragentHeader: FingerprintResultComponent['useragent'],
+) => {
+  if (!useragentHeader) return '';
+  return `브라우저: ${useragentHeader.browser?.family}, 기기: ${useragentHeader.device?.family}, 운영체제: ${useragentHeader.os?.family} `;
+};
+
+export const getUserInfoFromFingerprint = (
+  fingerprintResultComponents: FingerprintResultComponent,
+) => {
+  if (!fingerprintResultComponents) return {};
+
   return {
-    country: result.geoip?.country,
-    language: result.acceptHeaders?.language,
-    device:
-      result.useragent?.browser?.family +
-      result.useragent.device?.family +
-      result.useragent.os?.family,
+    country: fingerprintResultComponents.geoip?.country,
+    language: languageHeaderToLangauge(
+      fingerprintResultComponents.acceptHeaders?.language,
+    ),
+    device: useragentHeaderToDevice(fingerprintResultComponents.useragent),
   };
 };
